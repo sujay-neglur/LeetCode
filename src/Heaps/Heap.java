@@ -114,7 +114,7 @@ public class Heap {
     }
     
     public static void main(String[] args) {
-        System.out.println("Hello World");
+//        System.out.println("Hello World");
         int[] heap = new int[10];
         Random r = new Random(345);
         for (int i = 0; i < heap.length; ) {
