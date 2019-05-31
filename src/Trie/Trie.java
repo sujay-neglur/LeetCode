@@ -1,7 +1,5 @@
 package Trie;
 
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Trie {
     Node root = new Node('$');
