@@ -6,8 +6,15 @@ import java.util.Random;
 class Node{
     int data;
     Node next;
+    Node random;
     public Node(int data){
         this.data = data;
+    }
+
+    public Node(int data, Node next, Node random){
+        this.data = data;
+        this.next = next;
+        this.random = random;
     }
 }
 
@@ -15,6 +22,19 @@ public class LinkedList{
     Node first;
     Node last;
 
+
+    public Node reverse(Node head){
+       Node current = head;
+       Node runner = null;
+       Node previous =null;
+       while(current!=null){
+            runner = current.next;
+            current.next=previous;
+            previous=current;
+            current=runner;
+       }
+       return previous;
+    }
 
     public void add(int data){
         Node n = new Node(data);
@@ -59,8 +79,8 @@ public class LinkedList{
             }
         }
     }
-    public void print(){
-        Node start = first;
+    public void print(Node head){
+        Node start = head;
         while(start !=null){
             System.out.print(start.data);
             if(start.next!=null) System.out.print("-->");
@@ -109,19 +129,9 @@ public class LinkedList{
         for(int i=51;i<61;i++){
             linkedList.add(new Random().nextInt(i));
         }
-        Node runner = linkedList.first;
-        Node start = linkedList.first;
-        int size=0;
-//        while(runner!=null){
-//            System.out.println("Runner "+runner.data);
-//            runner=runner.next.next;
-//            System.out.println("Start "+start.data);
-//            start = start.next;
-//            size+=2;
-//        }
-        linkedList.print();
-        LinkedList newList = linkedList.partition(linkedList,linkedList.first.next.next.data);
-        newList.print();
+        linkedList.print(linkedList.first);
+        Node head = linkedList.reverse(linkedList.first);
+        linkedList.print(head);
     }
 
 }
