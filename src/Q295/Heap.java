@@ -94,13 +94,14 @@ class Heap{
         int rightChildIndex;
         if(type==Type.MIN_HEAP){
             // downheap for min heap
+            int minimum = Integer.MAX_VALUE;
             while (true){
-                int minimum = Integer.MAX_VALUE;
+//                int minimum = Integer.MAX_VALUE;
                 leftChildIndex = getChildIndex(current,1);
                 rightChildIndex = getChildIndex(current,2);
                 if(!validateChild(type,leftChildIndex) && !validateChild(type,rightChildIndex)) break;
                 if(current==minimum) break;
-
+                minimum = Integer.MAX_VALUE;
                 if(validateChild(type,leftChildIndex)){
                     // left child is present
                     minimum = minHeap.indexOf(Math.min(minHeap.get(current),minHeap.get(leftChildIndex)));
@@ -116,12 +117,14 @@ class Heap{
             }
         }
         else{
+            int maximum = Integer.MIN_VALUE;
             while (true){
-                int maximum = Integer.MIN_VALUE;
+//                int maximum = Integer.MIN_VALUE;
                 leftChildIndex = getChildIndex(current,1);
                 rightChildIndex = getChildIndex(current,2);
                 if(!validateChild(type,leftChildIndex) && !validateChild(type,rightChildIndex)) break;
                 if (current==maximum) break;
+                maximum = Integer.MIN_VALUE;
                 if(validateChild(type,leftChildIndex)){
                     // left child is present
                     maximum = maxHeap.indexOf(Math.max(maxHeap.get(current),maxHeap.get(leftChildIndex)));
