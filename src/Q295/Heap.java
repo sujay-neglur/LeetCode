@@ -89,53 +89,62 @@ class Heap{
 
     public void downHeap(Type type){
 //        System.out.println("Down heaping "+type);
-        int current = 0;
         int leftChildIndex;
         int rightChildIndex;
+        int current = 0;
         if(type==Type.MIN_HEAP){
-            // downheap for min heap
-            int minimum = Integer.MAX_VALUE;
             while (true){
-//                int minimum = Integer.MAX_VALUE;
                 leftChildIndex = getChildIndex(current,1);
                 rightChildIndex = getChildIndex(current,2);
-                if(!validateChild(type,leftChildIndex) && !validateChild(type,rightChildIndex)) break;
-                if(current==minimum) break;
-                minimum = Integer.MAX_VALUE;
-                if(validateChild(type,leftChildIndex)){
-                    // left child is present
-                    minimum = minHeap.indexOf(Math.min(minHeap.get(current),minHeap.get(leftChildIndex)));
-                }
-                if(validateChild(type,rightChildIndex)){
-                    // right child is present
-                    minimum = minHeap.indexOf(Math.min(minHeap.get(minimum),minHeap.get(rightChildIndex)));
+                boolean validateLeftChild = validateChild(type,leftChildIndex);
+                boolean validateRightChild = validateChild(type,rightChildIndex);
+                if(!validateLeftChild && !validateRightChild) break;
+                int minimum = Integer.MAX_VALUE;
+                if(validateLeftChild){
+                    minimum = Math.min(minHeap.get(current),minHeap.get(leftChildIndex))==minHeap.get(current)
+                            ?current:leftChildIndex;
                 }
 
-                swap(type,minimum,current);
-//                System.out.println("Swapping done for "+type);
-                current=minimum;
+                if(validateRightChild){
+                    minimum = Math.min(minHeap.get(minimum),minHeap.get(rightChildIndex))==minHeap.get(minimum)
+                            ?minimum:rightChildIndex;
+                }
+
+                if(minHeap.get(current)>minHeap.get(minimum)){
+                    swap(type,current,minimum);
+                    current = minimum;
+                }
+                else {
+                    break;
+                }
             }
         }
+
         else{
-            int maximum = Integer.MIN_VALUE;
             while (true){
-//                int maximum = Integer.MIN_VALUE;
                 leftChildIndex = getChildIndex(current,1);
                 rightChildIndex = getChildIndex(current,2);
-                if(!validateChild(type,leftChildIndex) && !validateChild(type,rightChildIndex)) break;
-                if (current==maximum) break;
-                maximum = Integer.MIN_VALUE;
-                if(validateChild(type,leftChildIndex)){
-                    // left child is present
-                    maximum = maxHeap.indexOf(Math.max(maxHeap.get(current),maxHeap.get(leftChildIndex)));
-                }
-                if(validateChild(type,rightChildIndex)){
-                    // right child is present
-                    maximum = maxHeap.indexOf(Math.max(maxHeap.get(maximum),maxHeap.get(rightChildIndex)));
+                boolean validateLeftChild = validateChild(type,leftChildIndex);
+                boolean validateRightChild = validateChild(type,rightChildIndex);
+                if(!validateLeftChild && !validateRightChild) break;
+                int maximum = Integer.MIN_VALUE;
+                if(validateLeftChild){
+                    maximum = Math.max(maxHeap.get(current),maxHeap.get(leftChildIndex))==maxHeap.get(current)?
+                            current:leftChildIndex;
                 }
 
-                swap(type,maximum,current);
-                current=maximum;
+                if(validateRightChild){
+                    maximum = Math.max(maxHeap.get(maximum),maxHeap.get(rightChildIndex))==maxHeap.get(maximum)
+                            ?maximum:rightChildIndex;
+                }
+
+                if(maxHeap.get(current)<maxHeap.get(maximum)){
+                    swap(type,current,maximum);
+                    current = maximum;
+                }
+                else {
+                    break;
+                }
             }
         }
     }

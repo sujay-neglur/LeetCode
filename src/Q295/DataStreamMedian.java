@@ -18,49 +18,25 @@ public class DataStreamMedian {
 
     public void addNumber(int num){
 //        System.out.println("Adding "+num);
-        if(heap.maxHeap.size()==0){
-            // max heap empty
-            heap.add(num, Heap.Type.MAX_HEAP);
-            return;
-        }
-
-        if(heap.minHeap.size()==0){
-            // min heap empty so check if element is less than the max heap top
-            if(num<heap.peek(Heap.Type.MAX_HEAP)){
-                // remove top of max heap
-                int maxHeapTop = heap.remove(Heap.Type.MAX_HEAP);
-                // add new element to max heap
-                heap.add(num, Heap.Type.MAX_HEAP);
-                // add max top to min heap
-                heap.add(maxHeapTop, Heap.Type.MIN_HEAP);
-                return;
+        if(heap.minHeap.size()==heap.maxHeap.size()){
+            if(heap.minHeap.size()!=0 && num>heap.peek(Heap.Type.MIN_HEAP)){
+                heap.add(heap.peek(Heap.Type.MAX_HEAP), Heap.Type.MIN_HEAP);
+                heap.remove(Heap.Type.MAX_HEAP);
+                heap.add(num, Heap.Type.MIN_HEAP);
             }
             else{
-                // add element to min heap
+                heap.add(num, Heap.Type.MAX_HEAP);
+            }
+        }
+        else{
+            if(num<heap.peek(Heap.Type.MAX_HEAP)){
+                heap.add(heap.peek(Heap.Type.MAX_HEAP), Heap.Type.MIN_HEAP);
+                heap.remove(Heap.Type.MAX_HEAP);
+                heap.add(num, Heap.Type.MAX_HEAP);
+            }
+            else{
                 heap.add(num, Heap.Type.MIN_HEAP);
-                return;
             }
-        }
-
-        if(num>heap.peek(Heap.Type.MIN_HEAP)){ // check top of min heap
-            if(heap.maxHeap.size()==heap.minHeap.size()){
-                // remove top of min heap
-                int minHeapTop = heap.remove(Heap.Type.MIN_HEAP);
-                // add min heap top to max heap
-                heap.add(minHeapTop, Heap.Type.MAX_HEAP);
-            }
-            //add new element to min heap
-            heap.add(num, Heap.Type.MIN_HEAP);
-        }
-        else {
-            if(heap.maxHeap.size()>heap.minHeap.size()){
-                // remove top of max heap
-                int maxHeapTop = heap.remove(Heap.Type.MAX_HEAP);
-                // add to min heap
-                heap.add(maxHeapTop, Heap.Type.MIN_HEAP);
-            }
-            // add new element to max heap
-            heap.add(num, Heap.Type.MAX_HEAP);
         }
     }
 
