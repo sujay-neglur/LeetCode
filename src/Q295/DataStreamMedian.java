@@ -2,40 +2,44 @@ package Q295;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class DataStreamMedian {
-    Heap heap = new Heap();
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
 
     public double getMedian(){
-        if(heap.maxHeap.size()>heap.minHeap.size()){
-            return heap.peek(Heap.Type.MAX_HEAP);
+        if(maxHeap.isEmpty()) return 0;
+
+        if(maxHeap.size()>minHeap.size()){
+            return maxHeap.peek();
         }
         else {
-            return (heap.peek(Heap.Type.MIN_HEAP)+heap.peek(Heap.Type.MAX_HEAP))/2.0;
+            return (minHeap.peek()+maxHeap.peek())/2.0;
         }
     }
 
     public void addNumber(int num){
 //        System.out.println("Adding "+num);
-        if(heap.minHeap.size()==heap.maxHeap.size()){
-            if(heap.minHeap.size()!=0 && num>heap.peek(Heap.Type.MIN_HEAP)){
-                heap.add(heap.peek(Heap.Type.MAX_HEAP), Heap.Type.MIN_HEAP);
-                heap.remove(Heap.Type.MAX_HEAP);
-                heap.add(num, Heap.Type.MIN_HEAP);
+        if(maxHeap.size()==minHeap.size()){
+            if((minHeap.peek()!=null) && (num>minHeap.peek())){
+                maxHeap.offer(minHeap.poll());
+                minHeap.offer(num);
             }
             else{
-                heap.add(num, Heap.Type.MAX_HEAP);
+                maxHeap.offer(num);
             }
         }
         else{
-            if(num<heap.peek(Heap.Type.MAX_HEAP)){
-                heap.add(heap.peek(Heap.Type.MAX_HEAP), Heap.Type.MIN_HEAP);
-                heap.remove(Heap.Type.MAX_HEAP);
-                heap.add(num, Heap.Type.MAX_HEAP);
+            if(num<maxHeap.peek()){
+                minHeap.offer(maxHeap.poll());
+                maxHeap.offer(num);
             }
             else{
-                heap.add(num, Heap.Type.MIN_HEAP);
+                minHeap.offer(num);
             }
         }
     }
@@ -65,11 +69,12 @@ public class DataStreamMedian {
 //                count++;
                 int input = Integer.parseInt(inputValues[i]);
                 dsm.addNumber(input);
-                System.out.println("Max heap "+dsm.heap.maxHeap);
-                System.out.println("Min heap "+dsm.heap.minHeap);
+                System.out.println("Max heap "+dsm.maxHeap);
+                System.out.println("Min heap "+dsm.minHeap);
                 System.out.println("-----------------------------");
             }
         }
 //        System.out.println(count);
+        
     }
 }
